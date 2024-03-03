@@ -1,3 +1,4 @@
+/*
 //Функция для проверки, является ли строка палиндромом.
 function checkPalindrome(str) {
   str = str.toLowerCase('').replaceAll(' ', '');
@@ -18,7 +19,7 @@ checkPalindrome('Лёша на полке клопа нашёл');
  *их в виде целого положительного числа. Если в строке нет ни одной цифры, функция должна вернуть NaN
  *
 */
-function findNumber(str) {
+/*function findNumber(str) {
   if(typeof str === 'number') {
     str = str.toString();
   }
@@ -46,7 +47,7 @@ findNumber(1.5);
  * заданной длины. Символы добавляются в начало строки. Если исходная строка превышает заданную длину,
  * она не должна обрезаться. Если «добивка» слишком длинная, она обрезается с конца.
  * */
-function completeStr(str, length, add) {
+/*function completeStr(str, length, add) {
   const actualPad = length - str.length;
   if(actualPad <= 0) {
     return str;
@@ -64,10 +65,10 @@ completeStr('qwerty', 4, '0');
  *  длину и возвращает true, если строка меньше или равна указанной длине, и false, если строка длиннее.
  *  Эта функция нам пригодится для валидации формы
  */
-function checkLength(str, length) {
+/*function checkLength(str, length) {
   return str.length <= length;
 }
 
 checkLength('проверяемая строка', 20);
 checkLength('проверяемая строка', 18);
-checkLength('проверяемая строка', 10);
+checkLength('проверяемая строка', 10);*/
