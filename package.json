@@ -15,6 +15,7 @@
     "eslint": "8.33.0",
     "eslint-config-htmlacademy": "9.0.0"
   },
+  "type": "module",
   "license": "MIT",
   "dependencies": {},
   "scripts": {
