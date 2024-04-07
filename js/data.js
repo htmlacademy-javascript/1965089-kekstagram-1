@@ -49,6 +49,7 @@ createComments();
 
 //создаю массив из 25 createComments:
 const createArrayComments = Array.from({length: COMMENTS_COUNT}, createComments);
+const createComment = () => getRandomArrayElement(createArrayComments);
 
 //создаю основной массив
 const createPictures = () => ({
@@ -56,7 +57,7 @@ const createPictures = () => ({
   url: `photos/${createRandomIdFromRangeGenerator(MIN_ID, MAX_ID)()}.jpg`,
   description: getRandomArrayElement(DESCRIPTION),
   likes: getRandomInteger(LIKES_MIN, LIKES_MAX),
-  comments: getRandomArrayElement(createArrayComments),
+  comments: Array.from({length: getRandomInteger(0, COMMENTS_COUNT)}, createComment),
 });
 
 //создаю массив из 25 createPictures:
