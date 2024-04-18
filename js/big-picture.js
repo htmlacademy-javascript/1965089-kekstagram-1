@@ -6,9 +6,11 @@ const smallPictureContainer = document.querySelector('.pictures');
 const bigPictureCloseButton = document.querySelector('.big-picture__cancel');
 const socialCommentCount = document.querySelector('.social__comment-count');
 const commentsLoader = document.querySelector('.comments-loader');
+const socialComments = document.querySelector('.social__comments');
+const socialComment = socialComments.querySelector('.social__comment');
 
 const onBigPictureEscKeydown = (evt) => {
-  if (isEscapeKey) {
+  if (isEscapeKey(evt)) {
     evt.preventDefault();
     bigPicture.classList.add('hidden');
     document.body.classList.remove('modal-open');
@@ -20,9 +22,6 @@ const openBigPicture = (pictureArrayElement) => {
   document.querySelector('.likes-count').textContent = pictureArrayElement.likes;
   document.querySelector('.comments-count').textContent = pictureArrayElement.comments.length;
   document.querySelector('.social__caption').textContent = pictureArrayElement.description;
-
-  const socialComments = document.querySelector('.social__comments');
-  const socialComment = socialComments.querySelector('.social__comment');
 
   while (socialComments.firstChild) {
     socialComments.removeChild(socialComments.firstChild);
@@ -52,8 +51,7 @@ const closeBigPicture = () => {
   document.body.classList.remove('modal-open');
 };
 
-
-smallPictureContainer.addEventListener('click', (evt) => {
+const findElementDataset = (evt) => {
   const picture = evt.target.closest('[data-id]');
 
   if (picture) {
@@ -63,6 +61,10 @@ smallPictureContainer.addEventListener('click', (evt) => {
 
     openBigPicture(pictureArrayElement);
   }
+};
+
+smallPictureContainer.addEventListener('click', (evt) => {
+  findElementDataset(evt);
 });
 
 bigPictureCloseButton.addEventListener('click', () => {
