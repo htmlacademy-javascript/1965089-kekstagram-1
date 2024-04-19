@@ -7,6 +7,7 @@ const LIKES_MAX = 200;
 const AVATAR_NUMBER = 6;
 const PICTURE_COUNT = 25;
 const COMMENTS_COUNT = 25;
+const generateId = createRandomIdFromRangeGenerator(MIN_ID, MAX_ID);
 
 const DESCRIPTION = [
   'Закат на фото',
@@ -53,7 +54,7 @@ const createComment = () => getRandomArrayElement(createArrayComments);
 
 //создаю основной массив
 const createPictures = () => ({
-  id: createRandomIdFromRangeGenerator(MIN_ID, MAX_ID)(),
+  id: generateId(),
   url: `photos/${createRandomIdFromRangeGenerator(MIN_ID, MAX_ID)()}.jpg`,
   description: getRandomArrayElement(DESCRIPTION),
   likes: getRandomInteger(LIKES_MIN, LIKES_MAX),
