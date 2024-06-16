@@ -67,6 +67,4 @@ smallPictureContainer.addEventListener('click', (evt) => {
   findElementDataset(evt);
 });
 
-bigPictureCloseButton.addEventListener('click', () => {
-  closeBigPicture();
-});
+bigPictureCloseButton.addEventListener('click', closeBigPicture);
