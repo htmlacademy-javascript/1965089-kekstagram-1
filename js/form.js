@@ -1,4 +1,6 @@
 import {isEscapeKey, stopPropagation} from './util.js';
+import {resetScale} from './pictures-scale.js';
+import {resetEffects} from './pictures-effects.js';
 
 const uploadFileInput = document.querySelector('#upload-file');
 const imgUploadOverlay = document.querySelector('.img-upload__overlay');
@@ -10,12 +12,15 @@ const HASHTAGS_MAX_COUNT = 5;
 const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
 const HASHTAG_ERROR_MESSAGE = 'В хэштеге допущена ошибка';
 
-
 const onimgUploadEscKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     imgUploadOverlay.classList.add('hidden');
     document.body.classList.remove('modal-open');
+    uploadFileInput.value = '';
+    resetScale();
+    resetEffects();
+    imgUploadForm.reset();
   }
 };
 
@@ -31,16 +36,19 @@ const openModal = () => {
   document.addEventListener('keydown', onimgUploadEscKeydown);
   imgUploadHashtags.addEventListener('keydown', stopPropagation);
   imgUploadComment.addEventListener('keydown', stopPropagation);
+  resetScale();
 };
 
 const closeModal = () => {
-  imgUploadForm.reset();
-  pristine.reset();
   imgUploadOverlay.classList.add('hidden');
-  document.body.classList.remove('modal-open');
   document.removeEventListener('keydown', onimgUploadEscKeydown);
+  document.body.classList.remove('modal-open');
   imgUploadHashtags.removeEventListener('keydown', stopPropagation);
   imgUploadComment.removeEventListener('keydown', stopPropagation);
+  imgUploadForm.reset();
+  pristine.reset();
+  resetScale();
+  resetEffects();
 };
 
 const isValidTag = (tag) => VALID_SYMBOLS.test(tag);
@@ -64,10 +72,6 @@ pristine.addValidator(
   HASHTAG_ERROR_MESSAGE
 );
 
-uploadFileInput.addEventListener('change', () => {
-  openModal();
-});
+uploadFileInput.addEventListener('change', openModal);
 
-imgUploadCancel.addEventListener('click', () => {
-  closeModal();
-});
+imgUploadCancel.addEventListener('click', closeModal);
