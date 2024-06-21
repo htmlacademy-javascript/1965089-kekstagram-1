@@ -11,6 +11,11 @@ const imgUploadHashtags = document.querySelector('.text__hashtags');
 const HASHTAGS_MAX_COUNT = 5;
 const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
 const HASHTAG_ERROR_MESSAGE = 'В хэштеге допущена ошибка';
+const successElement = document.querySelector('#success').content.querySelector('.success');
+const successButtonElement = document.querySelector('#success').content.querySelector('.success__button');
+const errorElement = document.querySelector('#error').content.querySelector('.error');
+const errorButtonElement = document.querySelector('#error').content.querySelector('.error__button');
+const submitButton = document.querySelector('.img-upload__submit');
 
 const onimgUploadEscKeydown = (evt) => {
   if (isEscapeKey(evt)) {
@@ -72,6 +77,66 @@ pristine.addValidator(
   HASHTAG_ERROR_MESSAGE
 );
 
+const showSuccessMessage = () => {
+  let flag = false;
+  return () => {
+    if (!flag) {
+      flag = true;
+      document.body.append(successElement);
+    } else {
+      const successElementClone = document.querySelector('.success');
+      successElementClone.classList.remove('hidden');
+    }
+  };
+};
+const showFullSuccessMessage = showSuccessMessage();
+
+const showErrorMessage = () => {
+  let flag = false;
+  return () => {
+    if (!flag) {
+      flag = true;
+      document.body.append(errorElement);
+    } else {
+      const errorElementClone = document.querySelector('.error');
+      errorElementClone.classList.remove('hidden');
+    }
+  };
+};
+const showFullErrorMessage = showErrorMessage();
+
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = 'Опубликовать';
+};
+
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = 'Публикация...';
+};
+
+const onCloseButtonClick = () => {
+  successElement.classList.add('hidden');
+  errorElement.classList.add('hidden');
+};
+
+const onFormSubmit = (cb) => {
+  imgUploadForm.addEventListener('submit', async (evt) => {
+    evt.preventDefault();
+    const isValid = pristine.validate();
+    if (isValid) {
+      blockSubmitButton();
+      successButtonElement.addEventListener('click', onCloseButtonClick);
+      errorButtonElement.addEventListener('click', onCloseButtonClick);
+      document.addEventListener('keydown', onimgUploadEscKeydown);
+      await cb(new FormData(imgUploadForm));
+      unblockSubmitButton();
+    }
+  });
+};
+
 uploadFileInput.addEventListener('change', openModal);
 
 imgUploadCancel.addEventListener('click', closeModal);
+
+export {closeModal, onFormSubmit, showFullSuccessMessage, showFullErrorMessage};
