@@ -1,9 +1,5 @@
-import { renderThumbnails } from './pictures.js';
-import { debounce } from './util.js';
-
-const RANDOM_PICTURES_COUNT = 10;
-
-const TIMEOUT = 500;
+import {renderThumbnails} from './pictures.js';
+import {debounce} from './util.js';
 
 const imgFilters = document.querySelector('.img-filters');
 const filterForm = document.querySelector('.img-filters__form');
@@ -19,7 +15,7 @@ const filterPictures = (pictures, sortButton) => {
   }
 
   if (sortButton === randomFilter) {
-    return pictures.slice().sort(() => Math.random() - 0.5).slice(0, RANDOM_PICTURES_COUNT);
+    return pictures.slice().sort(() => Math.random() - 0.5).slice(0, 10);
   }
 
   if (sortButton === discussedFilter) {
@@ -43,9 +39,9 @@ const setOnFilterClick = (evt, pictures) => {
 const setDebouncedFilter = (pictures) => {
   filterForm.addEventListener('click', debounce((evt) => {
     setOnFilterClick(evt, pictures);
-  }, TIMEOUT));
+  }, 500));
 };
 
 const showFilters = () => imgFilters.classList.remove('img-filters--inactive');
 
-export { setDebouncedFilter, showFilters };
+export {setDebouncedFilter, showFilters};

@@ -2,6 +2,8 @@ import {isEscapeKey, stopPropagation} from './util.js';
 import {resetScale} from './pictures-scale.js';
 import {resetEffects} from './pictures-effects.js';
 
+const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+
 const uploadFileInput = document.querySelector('#upload-file');
 const imgUploadOverlay = document.querySelector('.img-upload__overlay');
 const imgUploadForm = document.querySelector('.img-upload__form');
@@ -16,6 +18,8 @@ const successButtonElement = document.querySelector('#success').content.querySel
 const errorElement = document.querySelector('#error').content.querySelector('.error');
 const errorButtonElement = document.querySelector('#error').content.querySelector('.error__button');
 const submitButton = document.querySelector('.img-upload__submit');
+const fileChooser = document.querySelector('.img-upload__input[type=file]');
+const preview = document.querySelector('.img-upload__preview img');
 
 const onimgUploadEscKeydown = (evt) => {
   if (isEscapeKey(evt)) {
@@ -135,8 +139,21 @@ const onFormSubmit = (cb) => {
   });
 };
 
+const setPreviewPictureListener = () => {
+  fileChooser.addEventListener('change', () => {
+    const file = fileChooser.files[0];
+    const fileName = file.name.toLowerCase();
+
+    const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+
+    if (matches) {
+      preview.src = URL.createObjectURL(file);
+    }
+  });
+};
+
 uploadFileInput.addEventListener('change', openModal);
 
 imgUploadCancel.addEventListener('click', closeModal);
 
-export {closeModal, onFormSubmit, showFullSuccessMessage, showFullErrorMessage};
+export {closeModal, onFormSubmit, showFullSuccessMessage, showFullErrorMessage, setPreviewPictureListener};
