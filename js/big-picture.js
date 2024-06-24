@@ -1,5 +1,5 @@
 import {isEscapeKey} from './util.js';
-import {renderThumbnails} from './pictures.js';
+import {pictures} from './pictures.js';
 
 const bigPicture = document.querySelector('.big-picture');
 const smallPictureContainer = document.querySelector('.pictures');
@@ -55,7 +55,7 @@ const findElementDataset = (evt) => {
   const picture = evt.target.closest('[data-id]');
 
   if (picture) {
-    const pictureArrayElement = renderThumbnails.find(
+    const pictureArrayElement = pictures.find(
       (item) => item.id === +picture.dataset.id
     );
 

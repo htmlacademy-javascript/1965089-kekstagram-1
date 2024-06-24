@@ -1,8 +1,7 @@
-//import {createArrayPictures} from './data.js';
-
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const pictureList = document.querySelector('.pictures');
 const fragment = document.createDocumentFragment();
+let pictures = [];
 
 const renderThumbnails = (thumbnails) => {
   thumbnails.forEach(({url, likes, comments,id}) => {
@@ -14,6 +13,7 @@ const renderThumbnails = (thumbnails) => {
     fragment.appendChild(pictureElement);
   });
   pictureList.appendChild(fragment);
+  pictures = thumbnails;
 };
 
-export {renderThumbnails};
+export {renderThumbnails, pictures};
