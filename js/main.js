@@ -1,4 +1,4 @@
-import {renderThumbnails} from './pictures.js';
+import {renderThumbnails, setPictureListener} from './pictures.js';
 import './pictures.js';
 import './big-picture.js';
 import './form.js';
@@ -22,6 +22,7 @@ onFormSubmit(async (data) => {
 try {
   const data = await getData();
   renderThumbnails(data);
+  setPictureListener(data);
   showFilters();
   setPreviewPictureListener();
   setDebouncedFilter(data);

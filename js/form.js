@@ -3,16 +3,17 @@ import {resetScale} from './pictures-scale.js';
 import {resetEffects} from './pictures-effects.js';
 
 const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+const HASHTAGS_MAX_COUNT = 5;
+const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
+const HASHTAG_ERROR_MESSAGE = 'В хэштеге допущена ошибка';
 
+const body = document.querySelector('body');
 const uploadFileInput = document.querySelector('#upload-file');
 const imgUploadOverlay = document.querySelector('.img-upload__overlay');
 const imgUploadForm = document.querySelector('.img-upload__form');
 const imgUploadCancel = document.querySelector('.img-upload__cancel');
 const imgUploadComment = document.querySelector('.text__description');
 const imgUploadHashtags = document.querySelector('.text__hashtags');
-const HASHTAGS_MAX_COUNT = 5;
-const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
-const HASHTAG_ERROR_MESSAGE = 'В хэштеге допущена ошибка';
 const successElement = document.querySelector('#success').content.querySelector('.success');
 const successButtonElement = document.querySelector('#success').content.querySelector('.success__button');
 const errorElement = document.querySelector('#error').content.querySelector('.error');
@@ -22,7 +23,7 @@ const fileChooser = document.querySelector('.img-upload__input[type=file]');
 const preview = document.querySelector('.img-upload__preview img');
 
 const onimgUploadEscKeydown = (evt) => {
-  if (isEscapeKey(evt)) {
+  if (isEscapeKey(evt) && !body.classList.contains('open-error')) {
     evt.preventDefault();
     imgUploadOverlay.classList.add('hidden');
     document.body.classList.remove('modal-open');
@@ -105,6 +106,7 @@ const showErrorMessage = () => {
       const errorElementClone = document.querySelector('.error');
       errorElementClone.classList.remove('hidden');
     }
+    body.classList.add('open-error');
   };
 };
 const showFullErrorMessage = showErrorMessage();
@@ -119,9 +121,28 @@ const blockSubmitButton = () => {
   submitButton.textContent = 'Публикация...';
 };
 
-const onCloseButtonClick = () => {
+const hideModalMessage = () => {
   successElement.classList.add('hidden');
   errorElement.classList.add('hidden');
+  body.classList.remove('open-error');
+};
+
+const onBodyClick = (evt) => {
+  if (evt.target.matches('.success') || evt.target.matches('.error')) {
+    hideModalMessage();
+    document.removeEventListener('click', onBodyClick);
+  }
+};
+
+const onCloseButtonClick = () => {
+  hideModalMessage();
+};
+
+const onEscPress = (evt) => {
+  if (isEscapeKey(evt)) {
+    hideModalMessage();
+    document.removeEventListener('keydown', onEscPress);
+  }
 };
 
 const onFormSubmit = (cb) => {
@@ -132,7 +153,8 @@ const onFormSubmit = (cb) => {
       blockSubmitButton();
       successButtonElement.addEventListener('click', onCloseButtonClick);
       errorButtonElement.addEventListener('click', onCloseButtonClick);
-      document.addEventListener('keydown', onimgUploadEscKeydown);
+      document.addEventListener('keydown', onEscPress);
+      document.addEventListener('click', onBodyClick);
       await cb(new FormData(imgUploadForm));
       unblockSubmitButton();
     }

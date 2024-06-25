@@ -1,10 +1,8 @@
 import {isEscapeKey} from './util.js';
-import {pictures} from './pictures.js';
 
 const COMMENTS_STEP = 5;
 
 const bigPicture = document.querySelector('.big-picture');
-const smallPictureContainer = document.querySelector('.pictures');
 const bigPictureCloseButton = document.querySelector('.big-picture__cancel');
 const socialCommentCount = document.querySelector('.social__comment-count');
 const commentsLoader = document.querySelector('.comments-loader');
@@ -67,12 +65,13 @@ const onBigPictureEscKeydown = (evt) => {
   }
 };
 
-const openBigPicture = (pictureArrayElement) => {
+const openBigPicture = (pictureElement) => {
   bigPicture.classList.remove('hidden');
+  document.body.classList.add('modal-open');
   document.addEventListener('keydown', onBigPictureEscKeydown);
-  allComments = pictureArrayElement.comments;
-  getCommentsCount(pictureArrayElement.comments);
-  renderPhotoDetails(pictureArrayElement);
+  allComments = pictureElement.comments;
+  getCommentsCount(pictureElement.comments);
+  renderPhotoDetails(pictureElement);
 };
 
 const closeBigPicture = () => {
@@ -82,20 +81,6 @@ const closeBigPicture = () => {
   commentsShown = 0;
 };
 
-const findElementDataset = (evt) => {
-  const picture = evt.target.closest('[data-id]');
-
-  if (picture) {
-    const pictureArrayElement = pictures.find(
-      (item) => item.id === +picture.dataset.id
-    );
-
-    openBigPicture(pictureArrayElement);
-  }
-};
-
-smallPictureContainer.addEventListener('click', (evt) => {
-  findElementDataset(evt);
-});
-
 bigPictureCloseButton.addEventListener('click', closeBigPicture);
+
+export {openBigPicture};
